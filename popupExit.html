@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <title>Popup Exit</title>
+</head>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible&display=swap');
+
+    .conteudo-exit {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .conteudo-exit {
+        font-family: 'Atkinson Hyperlegible', sans-serif;
+        background: #FFF;
+        border-radius: 5px;
+        text-align: center;
+        border: 1px solid #ccc;
+        max-width: 450px;
+        min-height: 400px;
+    }
+
+    .btn-exit {
+        font-size: 15px;
+        background-color: #264b4b;
+        color: #fff;
+        padding-top: 12px;
+        padding-bottom: 12px;
+        cursor: pointer;
+        border-radius: 5px;
+        vertical-align: middle;
+        border: 1px solid #2d5a5a;
+    }
+
+    .close-exit {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+        width: 20px;
+        height: 20px;
+        background-color: white;
+        border-radius: 10px;
+    }
+
+    .exit {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        z-index: 1;
+        transform: translateY(60%) scale(0);
+        transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+    }
+
+    .exit-intent-popup.visible {
+        transform: translateY(0) scale(1);
+    }
+
+    .conteudo-exit {
+        background: url('https://dev-webpeak.sfo3.digitaloceanspaces.com/images/onibus-popupScroll2-gontijo.png');
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    .conteudo-exit .card {
+        width: 50%;
+        background-color: rgb(255, 255, 255, .9);
+        margin: 25px;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .conteudo-exit .mensagem {
+        color: #264b4b;
+    }
+
+    .conteudo-exit .titulo {
+        font-size: 25px;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .conteudo-exit .beneficios {
+        font-size:16px;
+    }
+
+    .conteudo-exit .viagem {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .conteudo-exit .pagamento {
+        font-size: 15px;
+        margin: 0;
+    }
+
+    .conteudo-exit .cartoes {
+        width: 100%;
+    }
+
+    .conteudo-exit .parcela .btn .link {
+        color: white;
+        text-decoration: none;
+    }
+
+    @media(min-width: 100px) and (max-width: 700px) {
+        .conteudo-exit{
+            background: none;
+        }
+    }
+</style>
+
+<body>
+    <div class="exit-intent-popup exit">
+        <div class="conteudo conteudo-exit">
+            <div class="card">
+                <p class="mensagem titulo">Espere! Não vá embora</p>
+                <p class="mensagem beneficios">Comprando pelo site é mais barato que pelo guichê</p>
+                <p class="mensagem viagem">Antecipe sua viagem</p>
+
+                <div class="parcela">
+                    <p class="mensagem pagamento">Parceles suas viagens em até 3X</p>
+                    <p class="mensagem pagamento">Nos seguintes meios de pagamento:</p>
+                    <img class="cartoes" src="https://dev-webpeak.sfo3.digitaloceanspaces.com/images/cartoes-popup-gontijo.png"
+                        alt="Cartões aceitos">
+                    <a class="link"
+                        href="https://www.gontijo.com.br/?utm_source=popup-exit&utm_medium=popup&utm_campaign=gontijo-popup-exit">
+                        <button class="btn-exit">
+                            Passagens mais baratas aqui
+                        </button>
+                    </a>
+                </div>
+            </div>
+            <span class="close close-exit">x</span>
+        </div>
+    </div>
+
+    <script>
+        //Popup Exit
+        // Aparece Popup
+        document.addEventListener('mouseout', function (e) {
+            if (!e.toElement && !e.relatedTarget) {
+                document.querySelector('.exit').classList.add('visible');
+            }
+        });
+
+        // Popup sai ao pressionar tecla espaço
+        document.body.onkeyup = function (e) {
+            if (e.keyCode == 32) {
+                document.querySelector('.exit').classList.remove('visible');
+            }
+        }
+
+        // Popup sai ao pressionar na tela
+        document.querySelector('.exit').addEventListener('click', function () {
+            document.querySelector('.exit').classList.remove('visible');
+        })
+
+        // Verifica quando o usuário remove o cursor da tela de navegação
+        var mouseEvent = function (e) {
+            var shouldShowExitIntent = !e.toElement &&
+                !e.relatedTarget &&
+                e.clientY < 10;
+
+            if (shouldShowExitIntent) {
+                document.removeEventListener('mouseout', mouseEvent);
+                document.querySelector('.exit').classList.add('visible');
+            }
+        };
+    </script>
+</body>
+
+</html>

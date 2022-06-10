@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <title>Popup Scroll</title>
+</head>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible&display=swap');
+
+    .conteudo-scroll {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .conteudo-scroll {
+        font-family: 'Atkinson Hyperlegible', sans-serif;
+        background: #FFF;
+        border-radius: 5px;
+        text-align: center;
+        border: 1px solid #ccc;
+        width: 25vw;
+        background-color: #264b4b;
+        border-radius: 10px;
+        padding:10px
+    }
+
+    .btn-scroll {
+        font-size: 15px;
+        background-color: #ffd500cc;
+        color: #264b4b;
+        padding-top: 12px;
+        padding-bottom: 12px;
+        font-weight: bold;
+        margin: 10px;
+        cursor: pointer;
+        border-radius: 5px;
+        vertical-align: middle;
+        border: 1px solid #ffd500cc;
+    }
+
+    .close-scroll {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+        width: 20px;
+        height: 20px;
+        background-color: white;
+        border-radius: 10px;
+    }
+
+    .scroll {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        z-index: 1;
+        visibility: hidden;
+    }
+
+    .conteudo-scroll .adquira {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .conteudo-scroll .adquira .titulo-adquira {
+        font-size: 25px;
+        color: #ffd500cc;
+        font-weight: 600;
+    }
+
+    .conteudo-scroll .adquira input {
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        margin: 5px 10px 5px 10px;
+        padding: 10px;
+    }
+
+    .conteudo-scroll .adquira label {
+        text-align: initial;
+        margin-left: 10px;
+        color: white;
+    }
+
+    @keyframes fade-left {
+        0% {
+            transform: translate(50%);
+        }
+
+        100% {
+            transform: translate(0);
+        }
+    }
+
+    @media(min-width: 1500px) and (max-width: 6000px){
+        .conteudo-scroll{
+            width: 18vw;
+        }
+    }
+
+    @media(min-width: 100px) and (max-width: 700px){
+        .conteudo-scroll{
+            width: 60vw;
+        }
+    }
+</style>
+
+<body>
+    <div class="exit-intent-popup scroll">
+        <div class="conteudo conteudo-scroll">
+            <div class="adquira">
+                <p class="titulo-adquira">Compre agora sua passagem de ônibus online</p>
+                <label for="">Saindo de:</label>
+                <input type="text" name="" id="">
+                
+                <label for="">Para:</label>
+                <input type="text" name="" id="">
+                <a class="link"
+                    href="https://www.gontijo.com.br/?utm_source=popup-exit&utm_medium=popup&utm_campaign=gontijo-popup-exit">
+                    <button class="btn-scroll">
+                        Comprar</button>
+                </a>
+            </div>
+            <span class="close close-scroll">x</span>
+        </div>
+    </div>
+    <div style="height: 1000vh"></div>
+
+    <script>
+        const CookieService = {
+            setCookie(name, value, days) {
+                let expires = '';
+
+                if (days) {
+                    const date = new Date();
+                    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                    expires = '; expires=' + date.toUTCString();
+                }
+                document.cookie = name + '=' + (value || '') + expires + ';';
+            },
+
+            getCookie(name) {
+                const cookies = document.cookie.split(';');
+
+                for (const cookie of cookies) {
+                    if (cookie.indexOf(name + '=') > -1) {
+                        return cookie.split('=')[1];
+                    }
+                }
+                return null;
+            }
+        };
+    </script>
+    <script>
+        //Popup Scroll
+        // Aparece Popup
+        window.addEventListener("scroll", function () {
+
+            var scrollTop = window.scrollY;
+            var docHeight = document.body.offsetHeight;
+            var winHeight = window.innerHeight;
+            var scrollPercent = scrollTop / (docHeight - winHeight);
+            var scrollPercentRounded = Math.round(scrollPercent * 100);
+            console.log(scrollPercentRounded);
+
+            if (scrollPercentRounded >= 50 && scrollPercentRounded <= 60) {
+                document.querySelector('.scroll').style.visibility = 'visible';
+                document.querySelector('.scroll').style.animation = 'fade-left 1s';
+
+                CookieService.setCookie('exitIntentShown', true, 10);
+            } else if (scrollPercentRounded !== null) {
+                document.querySelector('.scroll').style.visibility = 'hidden';
+                document.querySelector('.scroll').style.animation = 'none';
+            }
+        });
+
+        // Popup sai ao pressionar tecla de espaço
+        document.body.onkeyup = function (e) {
+            if (e.keyCode == 32) {
+                document.querySelector('.scroll').style.visibility = 'hidden';
+            }
+        }
+
+        // Popup sai ao clicar na tela
+        document.querySelector('.scroll').addEventListener('click', function () {
+            document.querySelector('.scroll').style.visibility = 'hidden';
+        })
+    </script>
+</body>
+
+</html>
